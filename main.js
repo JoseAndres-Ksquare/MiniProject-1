@@ -26,6 +26,9 @@ const numbersElement = [
    fiveElement, sixElement, sevenElement, eightElement, nineElement
 ];
 
+//Variables
+let displayStrMemo = null;
+let operatorMemo = null;
 
 /* Functions */
 
@@ -39,9 +42,15 @@ const getValueAsNum = () => {
 const setStrAsValue = (valueStr) =>{
     if(valueStr[valueStr.length-1] === '.'){
         displayElement.textContent += '.';
-        return
+        return;
     }
-    displayElement.textContent = parseFloat(valueStr).toLocaleString('en-US');
+    //Agrega los decimales y ya no suma 1
+    const [numCompleteStr, decimalStr] =  valueStr.split('.');
+    if(decimalStr){
+        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString() + '.' + decimalStr;
+    }else{
+        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US');
+    }
 }
 
 
@@ -54,8 +63,69 @@ const handleNumClick = (numStr) => {
     }
 };
 
+const resultOfOperationStr = () =>{
+    const displayNumMemo = parseFloat(displayStrMemo);
+    const currentDisplayNum = getValueAsNum();
+    let newDisplayNum;
+    if (operatorMemo === 'plus') {
+        newDisplayNum = displayNumMemo + currentDisplayNum;
+    }else if (operatorMemo === 'minus'){
+        newDisplayNum = displayNumMemo - currentDisplayNum;
+    }else if (operatorMemo === 'multiply'){
+        newDisplayNum = displayNumMemo * currentDisplayNum;
+    }else if (operatorMemo === 'division'){
+        newDisplayNum = displayNumMemo / currentDisplayNum;
+    }
+
+    return newDisplayNum.toString();
+};
+
+const handleOpClick = (operation) =>{
+    const currentDisplayStr = getValueAsStr();
+    if (!displayStrMemo) {
+        displayStrMemo = currentDisplayStr;
+        operatorMemo = operation;
+        setStrAsValue('0');
+        return;
+    }
+    displayStrMemo =  resultOfOperationStr();
+    operatorMemo = operation;
+    setStrAsValue('0');
+}
 
 
+//agregar event listener al btn C
+//Resetear display a 0
+cElement.addEventListener('click', () => {
+    setStrAsValue('0');
+    displayStrMemo = null;
+    operatorMemo = null;
+});
+
+//agregar event listener a los operadores
+plusElement.addEventListener('click', () =>{
+    handleOpClick('plus')
+});
+
+minusElement.addEventListener('click', () =>{
+    handleOpClick('minus')
+});
+
+multiplyElement.addEventListener('click', () =>{
+    handleOpClick('multiply')
+});
+
+divisionElement.addEventListener('click', () =>{
+    handleOpClick('division')
+});
+
+equalElement.addEventListener('click', () => {
+    if(displayStrMemo){
+        setStrAsValue(resultOfOperationStr());
+        displayStrMemo = null;
+        operatorMemo = null;
+    }
+});
 /* Events */
 
 for (let i=0; i < numbersElement.length; i++){

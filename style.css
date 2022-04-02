@@ -5,6 +5,7 @@
 
 body{
     margin: 25px;
+user-select: none;
 }
 .calculadora{
     background-color: black;
