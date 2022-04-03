@@ -80,10 +80,11 @@ const resultOfOperationStr = () =>{
     }else if (operatorMemo === 'division'){
         newDisplayNum = displayNumMemo / currentDisplayNum;
     }
-    if(newDisplayNum % 2 === 0){
-    return newDisplayNum.toString()
+    //redondeo de decimales
+    if(newDisplayNum % 1 === 0){
+        return newDisplayNum.toString();
     }else{
-        return newDisplayNum.toFixed(4)
+        return newDisplayNum.toFixed(4);
     }
     
 };
@@ -111,11 +112,27 @@ cElement.addEventListener('click', () => {
 });
 
 //agregar event listener a los operadores
+
+
+
 plusElement.addEventListener('click', () =>{
     handleOpClick('plus')
 });
 
 minusElement.addEventListener('click', () =>{
+    /* const currentDisplayNum = getValueAsNum();
+    const currentDisplayStr = getValueAsStr();
+    console.log(currentDisplayNum)
+    console.log(currentDisplayStr)
+    if(currentDisplayStr === '-0'){
+        setStrAsValue('0');
+        return;
+    }
+    if (currentDisplayNum >= 0 ) {
+        setStrAsValue('-'+currentDisplayStr);
+    }else{
+        setStrAsValue(currentDisplayStr.substring(1))
+    } */
     handleOpClick('minus')
 });
 
@@ -134,7 +151,7 @@ equalElement.addEventListener('click', () => {
         operatorMemo = null;
     }
 });
-/* Events */
+
 
 for (let i=0; i < numbersElement.length; i++){
     const numElement = numbersElement[i];
