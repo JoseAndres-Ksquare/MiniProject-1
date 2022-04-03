@@ -80,8 +80,12 @@ const resultOfOperationStr = () =>{
     }else if (operatorMemo === 'division'){
         newDisplayNum = displayNumMemo / currentDisplayNum;
     }
-
-    return newDisplayNum.toFixed(4);
+    if(newDisplayNum % 2 === 0){
+    return newDisplayNum.toString()
+    }else{
+        return newDisplayNum.toFixed(4)
+    }
+    
 };
 
 const handleOpClick = (operation) =>{
