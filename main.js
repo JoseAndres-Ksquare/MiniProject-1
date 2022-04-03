@@ -33,21 +33,24 @@ let operatorMemo = null;
 /* Functions */
 
 const getValueAsStr = () => {
+    
     return displayElement.textContent.split(',').join('');
 }
 const getValueAsNum = () => {
+    
     return parseFloat(getValueAsStr());
 }
 
-const setStrAsValue = (valueStr) =>{
+const setStrAsValue = (valueStr) => {
     if(valueStr[valueStr.length-1] === '.'){
         displayElement.textContent += '.';
         return;
     }
+    
     //Agrega los decimales y ya no suma 1
     const [numCompleteStr, decimalStr] =  valueStr.split('.');
     if(decimalStr){
-        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString() + '.' + decimalStr;
+        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US') + '.' + decimalStr;
     }else{
         displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US');
     }
@@ -59,7 +62,8 @@ const handleNumClick = (numStr) => {
     if(currentDisplayStr === "0"){
         setStrAsValue(numStr);
     }else{
-        setStrAsValue(currentDisplayStr + numStr);
+        let result = setStrAsValue(currentDisplayStr + numStr);
+        return result;
     }
 };
 
@@ -77,7 +81,7 @@ const resultOfOperationStr = () =>{
         newDisplayNum = displayNumMemo / currentDisplayNum;
     }
 
-    return newDisplayNum.toString();
+    return newDisplayNum.toFixed(4);
 };
 
 const handleOpClick = (operation) =>{
