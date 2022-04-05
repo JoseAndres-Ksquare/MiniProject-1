@@ -43,25 +43,20 @@ const getValueAsNum = () => {
 }
 
 const setStrAsValue = (valueStr) => {
-    if(resetNumbers){
-        displayElement.textContent = '0.';
-        resetNumbers = false;
-    }else{
-        if(valueStr[valueStr.length-1] === '.'){
-            displayElement.textContent += '.';
-            return;
-        }
+
     
-        //Agrega los decimales y ya no suma 1
-        const [numCompleteStr, decimalStr] =  valueStr.split('.');
-        if(decimalStr){
-            displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US') + '.' + decimalStr;
-        }else{
-            displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US');
-        }
+    if(valueStr[valueStr.length-1] === '.'){
+        displayElement.textContent += '.';
+        return;
     }
-    
-    
+
+    //Agrega los decimales y ya no suma 1
+    const [numCompleteStr, decimalStr] =  valueStr.split('.');
+    if(decimalStr){
+        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US') + '.' + decimalStr;
+    }else{
+        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US');
+    }
 }
 
 
