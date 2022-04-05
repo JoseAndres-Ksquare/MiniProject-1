@@ -29,6 +29,7 @@ const numbersElement = [
 //Variables
 let displayStrMemo = null;
 let operatorMemo = null;
+let resetNumbers = false;
 
 /* Functions */
 
@@ -42,18 +43,25 @@ const getValueAsNum = () => {
 }
 
 const setStrAsValue = (valueStr) => {
-    if(valueStr[valueStr.length-1] === '.'){
-        displayElement.textContent += '.';
-        return;
+    if(resetNumbers){
+        displayElement.textContent = '0.';
+        resetNumbers = false;
+    }else{
+        if(valueStr[valueStr.length-1] === '.'){
+            displayElement.textContent += '.';
+            return;
+        }
+    
+        //Agrega los decimales y ya no suma 1
+        const [numCompleteStr, decimalStr] =  valueStr.split('.');
+        if(decimalStr){
+            displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US') + '.' + decimalStr;
+        }else{
+            displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US');
+        }
     }
     
-    //Agrega los decimales y ya no suma 1
-    const [numCompleteStr, decimalStr] =  valueStr.split('.');
-    if(decimalStr){
-        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US') + '.' + decimalStr;
-    }else{
-        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US');
-    }
+    
 }
 
 
@@ -62,23 +70,31 @@ const handleNumClick = (numStr) => {
     if(currentDisplayStr === "0"){
         setStrAsValue(numStr);
     }else{
-        let result = setStrAsValue(currentDisplayStr + numStr);
-        return result;
+        if(resetNumbers){
+            setStrAsValue(numStr);
+            resetNumbers = false;
+        }else{
+            setStrAsValue(currentDisplayStr + numStr);
+        }
+
     }
 };
 
 const resultOfOperationStr = () =>{
     const displayNumMemo = parseFloat(displayStrMemo);
     const currentDisplayNum = getValueAsNum();
+    
     let newDisplayNum;
-    if (operatorMemo === 'plus') {
+    if (operatorMemo === 'multiply'){
+    newDisplayNum = displayNumMemo * currentDisplayNum;
+    
+    }else if (operatorMemo === 'division'){
+    newDisplayNum = displayNumMemo / currentDisplayNum;
+    }
+    else if (operatorMemo === 'plus') {
         newDisplayNum = displayNumMemo + currentDisplayNum;
     }else if (operatorMemo === 'minus'){
         newDisplayNum = displayNumMemo - currentDisplayNum;
-    }else if (operatorMemo === 'multiply'){
-        newDisplayNum = displayNumMemo * currentDisplayNum;
-    }else if (operatorMemo === 'division'){
-        newDisplayNum = displayNumMemo / currentDisplayNum;
     }
     //redondeo de decimales
     if(newDisplayNum % 1 === 0){
@@ -91,15 +107,24 @@ const resultOfOperationStr = () =>{
 
 const handleOpClick = (operation) =>{
     const currentDisplayStr = getValueAsStr();
-    if (!displayStrMemo) {
-        displayStrMemo = currentDisplayStr;
+
+    if(currentDisplayStr !== '0'){
+        if (!displayStrMemo) {
+            displayStrMemo = currentDisplayStr;
+            operatorMemo = operation;
+            setStrAsValue('0');
+            return;
+        }
+        displayStrMemo =  resultOfOperationStr();
         operatorMemo = operation;
         setStrAsValue('0');
-        return;
+    }else{
+        if(operatorMemo==='multiply' && operation === 'minus'){
+            displayStrMemo = `-${displayStrMemo}`;
+        }else{
+            operatorMemo=operation;
+        }
     }
-    displayStrMemo =  resultOfOperationStr();
-    operatorMemo = operation;
-    setStrAsValue('0');
 }
 
 
@@ -109,6 +134,7 @@ cElement.addEventListener('click', () => {
     setStrAsValue('0');
     displayStrMemo = null;
     operatorMemo = null;
+    resetNumbers = false;
 });
 
 //agregar event listener a los operadores
@@ -120,7 +146,7 @@ plusElement.addEventListener('click', () =>{
 });
 
 minusElement.addEventListener('click', () =>{
-    /* const currentDisplayNum = getValueAsNum();
+/*     const currentDisplayNum = getValueAsNum();
     const currentDisplayStr = getValueAsStr();
     console.log(currentDisplayNum)
     console.log(currentDisplayStr)
@@ -149,6 +175,7 @@ equalElement.addEventListener('click', () => {
         setStrAsValue(resultOfOperationStr());
         displayStrMemo = null;
         operatorMemo = null;
+        resetNumbers = true;
     }
 });
 
