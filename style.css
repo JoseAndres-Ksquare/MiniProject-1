@@ -46,7 +46,11 @@ body{
     font-family: 'Anybody';
     cursor: pointer;
     transition: filter .1s;
+    width: 100px;
+    border-radius: 10px;
 }
+
+
 
 .btn.btn-operator{
     font-family: 'Montserrat';
