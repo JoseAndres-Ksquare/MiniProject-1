@@ -22,170 +22,173 @@ const threeElement = document.getElementById("btn-three");
 const zeroElement = document.getElementById("btn-zero");
 
 const numbersElement = [
-   zeroElement, oneElement, twoElement, threeElement, fourElement, 
-   fiveElement, sixElement, sevenElement, eightElement, nineElement
+  zeroElement,
+  oneElement,
+  twoElement,
+  threeElement,
+  fourElement,
+  fiveElement,
+  sixElement,
+  sevenElement,
+  eightElement,
+  nineElement,
+
+
 ];
 
 //Variables
-let displayStrMemo = null;
+let displayStrMemo = 0;
 let operatorMemo = null;
 let resetNumbers = false;
+
 
 /* Functions */
 
 const getValueAsStr = () => {
-    
-    return displayElement.textContent.split(',').join('');
-}
+  return displayElement.textContent.split(",").join("");
+};
 const getValueAsNum = () => {
-    
-    return parseFloat(getValueAsStr());
-}
+  return parseFloat(getValueAsStr());
+};
 
 const setStrAsValue = (valueStr) => {
+    console.log(resetNumbers);
+  if (valueStr[valueStr.length - 1] === ".") {
+      if(resetNumbers){
+        displayElement.textContent = "0.";
+        resetNumbers = false;
+      }else{
+          displayElement.textContent += ".";
+      }
+    return;
+  }
 
-    
-    if(valueStr[valueStr.length-1] === '.'){
-        displayElement.textContent += '.';
-        return;
-    }
 
-    //Agrega los decimales y ya no suma 1
-    const [numCompleteStr, decimalStr] =  valueStr.split('.');
-    if(decimalStr){
-        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US') + '.' + decimalStr;
-    }else{
-        displayElement.textContent = parseFloat(numCompleteStr).toLocaleString('en-US');
-    }
-}
-
+  //Agrega los decimales y ya no suma 1
+  const [numCompleteStr, decimalStr] = valueStr.split(".");
+  if (decimalStr) {
+    displayElement.textContent =
+      parseFloat(numCompleteStr).toLocaleString("en-US") + "." + decimalStr;
+  } else {
+    displayElement.textContent =
+      parseFloat(numCompleteStr).toLocaleString("en-US");
+  }
+};
 
 const handleNumClick = (numStr) => {
-    const currentDisplayStr = getValueAsStr();
-    if(currentDisplayStr === "0"){
-        setStrAsValue(numStr);
-    }else{
-        if(resetNumbers){
-            setStrAsValue(numStr);
-            resetNumbers = false;
-        }else{
-            setStrAsValue(currentDisplayStr + numStr);
-        }
-
+  const currentDisplayStr = getValueAsStr();
+  if (currentDisplayStr === "0") {
+    setStrAsValue(numStr);
+  } else {
+    if (resetNumbers) {
+      setStrAsValue(numStr);
+      resetNumbers = false;
+    } else {
+      setStrAsValue(currentDisplayStr + numStr);
     }
+  }
 };
 
-const resultOfOperationStr = () =>{
-    const displayNumMemo = parseFloat(displayStrMemo);
-    const currentDisplayNum = getValueAsNum();
-    
-    let newDisplayNum;
-    if (operatorMemo === 'multiply'){
+const resultOfOperationStr = () => {
+  const displayNumMemo = parseFloat(displayStrMemo);
+  const currentDisplayNum = getValueAsNum();
+
+  let newDisplayNum;
+  if (operatorMemo === "multiply") {
     newDisplayNum = displayNumMemo * currentDisplayNum;
-    
-    }else if (operatorMemo === 'division'){
+  } else if (operatorMemo === "division") {
     newDisplayNum = displayNumMemo / currentDisplayNum;
-    }
-    else if (operatorMemo === 'plus') {
-        newDisplayNum = displayNumMemo + currentDisplayNum;
-    }else if (operatorMemo === 'minus'){
-        newDisplayNum = displayNumMemo - currentDisplayNum;
-    }
-    //redondeo de decimales
-    if(newDisplayNum % 1 === 0){
-        return newDisplayNum.toString();
-    }else{
-        return newDisplayNum.toFixed(4);
-    }
-    
+  } else if (operatorMemo === "plus") {
+    newDisplayNum = displayNumMemo + currentDisplayNum;
+  } else if (operatorMemo === "minus") {
+    newDisplayNum = displayNumMemo - currentDisplayNum;
+  }
+  //redondeo de decimales
+  if (newDisplayNum % 1 === 0) {
+    return newDisplayNum.toString();
+  } else {
+    return newDisplayNum.toFixed(4);
+  }
 };
 
-const handleOpClick = (operation) =>{
-    const currentDisplayStr = getValueAsStr();
-
-    if(currentDisplayStr !== '0'){
-        if (!displayStrMemo) {
-            displayStrMemo = currentDisplayStr;
-            operatorMemo = operation;
-            setStrAsValue('0');
-            return;
-        }
-        displayStrMemo =  resultOfOperationStr();
-        operatorMemo = operation;
-        setStrAsValue('0');
-    }else{
-        if(operatorMemo==='multiply' && operation === 'minus'){
-            displayStrMemo = `-${displayStrMemo}`;
-        }else{
-            operatorMemo=operation;
-        }
+const handleOpClick = (operation) => {
+  const currentDisplayStr = getValueAsStr();
+  if(operation === 'minus' && !displayStrMemo){
+      if(currentDisplayStr === '0')  {displayElement.textContent = '-';
+      return;}
+  }
+  if (currentDisplayStr !== "0") {
+    if (!displayStrMemo) {
+      displayStrMemo = currentDisplayStr;
+      operatorMemo = operation;
+      setStrAsValue('0')
+      return;
     }
-}
+    displayStrMemo = resultOfOperationStr();
+    operatorMemo = operation;
+    setStrAsValue("0");
+  } else {
+    if (operatorMemo === "multiply" && operation === "minus") {
+      displayStrMemo = `-${displayStrMemo}`;
 
+    } else if(operatorMemo === "division" && operation === "minus"){
+        displayStrMemo = `-${displayStrMemo}`;
+
+    }else if(displayStrMemo === "btn-zero" && operation === "division"){
+        displayStrMemo = `0`;
+
+    }else {
+      operatorMemo = operation;
+    }
+  }
+};
 
 //agregar event listener al btn C
 //Resetear display a 0
-cElement.addEventListener('click', () => {
-    setStrAsValue('0');
-    displayStrMemo = null;
-    operatorMemo = null;
-    resetNumbers = false;
+cElement.addEventListener("click", () => {
+  setStrAsValue("0");
+  displayStrMemo = null;
+  operatorMemo = null;
+  resetNumbers = false;
 });
 
 //agregar event listener a los operadores
 
-
-
-plusElement.addEventListener('click', () =>{
-    handleOpClick('plus')
+plusElement.addEventListener("click", () => {
+  handleOpClick("plus");
 });
 
-minusElement.addEventListener('click', () =>{
-/*     const currentDisplayNum = getValueAsNum();
-    const currentDisplayStr = getValueAsStr();
-    console.log(currentDisplayNum)
-    console.log(currentDisplayStr)
-    if(currentDisplayStr === '-0'){
-        setStrAsValue('0');
-        return;
-    }
-    if (currentDisplayNum >= 0 ) {
-        setStrAsValue('-'+currentDisplayStr);
-    }else{
-        setStrAsValue(currentDisplayStr.substring(1))
-    } */
-    handleOpClick('minus')
+minusElement.addEventListener("click", () => {
+    
+  handleOpClick("minus");
 });
 
-multiplyElement.addEventListener('click', () =>{
-    handleOpClick('multiply')
+multiplyElement.addEventListener("click", () => {
+  handleOpClick("multiply");
 });
 
-divisionElement.addEventListener('click', () =>{
-    handleOpClick('division')
+divisionElement.addEventListener("click", () => {
+    handleOpClick("division");
 });
 
-equalElement.addEventListener('click', () => {
-    if(displayStrMemo){
-        setStrAsValue(resultOfOperationStr());
-        displayStrMemo = null;
-        operatorMemo = null;
-        resetNumbers = true;
-    }
+equalElement.addEventListener("click", () => {
+    setStrAsValue(resultOfOperationStr());
+    displayStrMemo = 0;
+    operatorMemo = null;
+    resetNumbers = true;
 });
 
-
-for (let i=0; i < numbersElement.length; i++){
-    const numElement = numbersElement[i];
-    numElement.addEventListener('click', () => {
-        handleNumClick(i.toString());
-    });
+for (let i = 0; i < numbersElement.length; i++) {
+  const numElement = numbersElement[i];
+  numElement.addEventListener("click", () => {
+    handleNumClick(i.toString());
+  });
 }
 
-dotElement.addEventListener('click', () => {
-    const currentDisplayStr = getValueAsStr();
-    if(!currentDisplayStr.includes('.')){
-    setStrAsValue(currentDisplayStr + '.')
-    }
+dotElement.addEventListener("click", () => {
+  const currentDisplayStr = getValueAsStr();
+  const arrayDisplay = currentDisplayStr.split('');
+  if (arrayDisplay[arrayDisplay.length-1] !== '.') {
+    setStrAsValue(currentDisplayStr + ".");
+  }
 });
-
