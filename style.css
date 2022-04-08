@@ -91,3 +91,73 @@ body {
 .btn:focus {
   filter: brightness(120%);
 }
+
+/* Css para viewports de más de 400 */
+@media only screen and (max-width: 500px) {
+  .calculadora {
+    width: 350px;
+    height: 650px;
+  }
+
+  .display-class {
+    font-size: 60px;
+    margin-right: 20px;
+    margin-top: 40px;
+    height: 110px;
+  }
+
+  .buttons-container {
+    gap: 0px;
+    padding: 5px 0 0 0;
+    align-items: center;
+  }
+
+  .btn{
+    font-size: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+#btn-C {
+  width: 150px;
+}
+
+#btn-zero {
+  width: 150px;
+
+}
+
+#btn-equal {
+  width: 150px;
+}
+
+}
+
+@media only screen and (max-width: 390px) {
+  .calculadora {
+    width: 300px;
+    height: auto;
+  }
+  
+  .display-class {
+    font-size: 60px;
+    margin-right: 20px;
+    margin-top: 20px;
+    height: 95px;
+  }
+
+  #btn-C {
+    width: 120px;
+  }
+  
+  #btn-zero {
+    width: 120px;
+  
+  }
+  
+  #btn-equal {
+    width: 120px;
+  }
+
+}
