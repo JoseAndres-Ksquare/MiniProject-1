@@ -131,7 +131,7 @@ const handleOpClick = (operation) => {
     setStrAsValue("0");
   } else {
     if (operatorMemo === "multiply" && operation === "minus") {
-      displayStrMemo = `-${displayStrMemo}`;
+      displayStrMemo = `${displayStrMemo*-1}`;
 
     } else if(operatorMemo === "division" && operation === "minus"){
         displayStrMemo = `-${displayStrMemo}`;
