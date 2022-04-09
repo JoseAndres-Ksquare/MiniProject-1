@@ -10,7 +10,7 @@ body {
 .calculadora {
   background-color: #081f35;
   width: 520px;
-  height: 600px;
+  height: auto;
   border-radius: 20px;
   padding-top: 35px;
   color: white;
@@ -33,7 +33,7 @@ body {
   gap: 20px;
   background-color: #0b2742;
   padding: 20px;
-  height: 400px;
+  height: 450px;
   border-radius: 0 0 20px 20px;
   border-top: 2px #0235df solid;
 }
@@ -96,7 +96,7 @@ body {
 @media only screen and (max-width: 500px) {
   .calculadora {
     width: 350px;
-    height: 650px;
+    height: auto;
   }
 
   .display-class {
