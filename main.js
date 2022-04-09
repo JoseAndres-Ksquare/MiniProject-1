@@ -37,7 +37,7 @@ const numbersElement = [
 ];
 
 //Variables
-let displayStrMemo = 0;
+let displayStrMemo = null;
 let operatorMemo = null;
 let resetNumbers = false;
 
@@ -117,11 +117,13 @@ const handleOpClick = (operation) => {
       if(currentDisplayStr === '0')  {displayElement.textContent = '-';
       return;}
   }
+
   if (currentDisplayStr !== "0") {
     if (!displayStrMemo) {
       displayStrMemo = currentDisplayStr;
       operatorMemo = operation;
       setStrAsValue('0')
+      resetNumbers = false;
       return;
     }
     displayStrMemo = resultOfOperationStr();
@@ -134,8 +136,8 @@ const handleOpClick = (operation) => {
     } else if(operatorMemo === "division" && operation === "minus"){
         displayStrMemo = `-${displayStrMemo}`;
 
-    }else if(displayStrMemo === "btn-zero" && operation === "division"){
-        displayStrMemo = `0`;
+    }else if(displayStrMemo === "NaN"){
+        displayStrMemo = '0';
 
     }else {
       operatorMemo = operation;
@@ -147,7 +149,7 @@ const handleOpClick = (operation) => {
 //Resetear display a 0
 cElement.addEventListener("click", () => {
   setStrAsValue("0");
-  displayStrMemo = null;
+  displayStrMemo = 0;
   operatorMemo = null;
   resetNumbers = false;
 });
@@ -156,6 +158,7 @@ cElement.addEventListener("click", () => {
 
 plusElement.addEventListener("click", () => {
   handleOpClick("plus");
+  
 });
 
 minusElement.addEventListener("click", () => {
