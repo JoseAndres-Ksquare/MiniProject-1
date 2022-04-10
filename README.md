@@ -1,5 +1,8 @@
 # MiniProject-1
 
+## Memebers: José Andrés Cervera Novelo & Braulio Ochoa Guerrero
+
+
 | User Stories     | Andres Cervera | Braulio Ochoa |
 | ---------------- | :--: | ---: |
 | The calculator must contain a clickable element containing an equal sign  |  X   |      |
@@ -14,3 +17,7 @@
 | When clicking the decimal or period element a '.' should be added to the current number and only one decimal can be present per number  |      |  X   |
 | If 2 or more operators are entered consecutively, the operation performed should be the last operator entered (excluding the negative (-) sign). For example, if 5 + * 7 = is entered, the result should be 35 (i.e., 5 * 7); if 5 * - 5 = is entered, the result should be -25 (i.e., 5 * (-5)). |  X   |  X   |
 | Pressing an operator immediately following the equal sing (=) should start a new calculation that operates on the result of the previous evaluation. |      |  X   |
+
+
+
+# Demo https://joseandres-ksquare.github.io/MiniProject-1/
